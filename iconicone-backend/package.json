@@ -1,0 +1,11 @@
+{
+  "name": "iconicone-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "nodemailer": "^6.9.9",
+    "@vercel/kv": "^2.0.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

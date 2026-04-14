@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICONICONE — Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0A0A0B;
+  --surface:  #111114;
+  --surface2: #18181D;
+  --border:   #222228;
+  --accent:   #E8820C;
+  --accent2:  #FF9D2F;
+  --green:    #22c55e;
+  --yellow:   #f59e0b;
+  --red:      #ef4444;
+  --text:     #FFFFFF;
+  --muted:    rgba(255,255,255,0.45);
+  --muted2:   rgba(255,255,255,0.25);
+  --r:        10px;
+  --grad:     linear-gradient(135deg, #E8820C 0%, #FF9D2F 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ICONS */
+.icon{width:18px;height:18px;flex-shrink:0}
+.icon-lg{width:22px;height:22px;flex-shrink:0}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:radial-gradient(ellipse at 50% 0%, rgba(232,130,12,0.12) 0%, transparent 60%)}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:48px 40px;width:100%;max-width:400px;box-shadow:0 32px 80px rgba(0,0,0,.7)}
+.login-logo{text-align:center;margin-bottom:36px}
+.login-icon{width:64px;height:64px;background:var(--grad);border-radius:18px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 8px 32px rgba(232,130,12,.35)}
+.login-logo h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.login-logo p{color:var(--muted);font-size:14px;margin-top:4px}
+
+/* FORMS */
+.fg{margin-bottom:16px}
+label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+input,select,textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:9px;padding:11px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:border .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+select option{background:var(--surface)}
+input::placeholder,textarea::placeholder{color:var(--muted2)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:9px;border:none;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-primary{background:var(--grad);color:#fff;width:100%;justify-content:center;box-shadow:0 4px 20px rgba(232,130,12,.3)}
+.btn-primary:hover:not(:disabled){opacity:.9;transform:translateY(-1px);box-shadow:0 6px 24px rgba(232,130,12,.4)}
+.btn-sm{padding:7px 13px;font-size:13px}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--border)}
+.btn-green{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.btn-green:hover{background:rgba(34,197,94,.18)}
+.btn-yellow{background:rgba(245,158,11,.1);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
+.btn-red{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.btn-red:hover{background:rgba(239,68,68,.18)}
+.btn-google{background:#fff;color:#1a1a1a;border:1.5px solid #e0e0e0;justify-content:center;width:100%;gap:10px;font-size:14px;padding:12px 18px;border-radius:9px;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.btn-google:hover{background:#f5f5f5;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.err{color:var(--red);font-size:13px;margin-top:8px;text-align:center}
+
+/* APP SHELL */
+#app{display:none;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:236px;background:var(--surface);border-right:1px solid var(--border);padding:20px 14px;display:flex;flex-direction:column;gap:2px;z-index:100}
+.sidebar-logo{padding:8px 10px;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .logo-icon{width:36px;height:36px;background:var(--grad);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 14px rgba(232,130,12,.3)}
+.sidebar-logo span{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;font-size:13.5px;font-weight:500;color:var(--muted);transition:all .15s;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:var(--surface2);color:rgba(255,255,255,0.8)}
+.nav-item.active{background:rgba(232,130,12,.12);color:var(--accent2);border:1px solid rgba(232,130,12,.15)}
+.nav-badge{margin-left:auto;background:var(--accent);color:#fff;border-radius:8px;padding:1px 7px;font-size:11px;font-weight:700}
+.sidebar-bottom{margin-top:auto;padding-top:12px;border-top:1px solid var(--border)}
+.main{margin-left:236px;padding:32px;min-height:100vh}
+.page{display:none}
+.page.active{display:block}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.page-title{font-size:21px;font-weight:700;letter-spacing:-.02em}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px}
+.stat-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.stat-value{font-size:32px;font-weight:700;margin-top:8px;letter-spacing:-.02em}
+
+/* FILTER */
+.filter-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+.filter-bar .fg{margin:0;flex:1;min-width:130px}
+.tab-row{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--muted);transition:all .15s}
+.tab.active{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 2px 12px rgba(232,130,12,.3)}
+
+/* TABLE */
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{background:var(--surface2);padding:11px 16px;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;text-align:left}
+td{padding:13px 16px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(232,130,12,.03)}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.badge-neu{background:rgba(232,130,12,.15);color:var(--accent2)}
+.badge-gelesen{background:rgba(245,158,11,.12);color:var(--yellow)}
+.badge-erledigt{background:rgba(34,197,94,.12);color:var(--green)}
+.td-name{font-weight:600;font-size:14px}
+.td-sub{color:var(--muted);font-size:12px;margin-top:2px}
+.td-msg{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
+.actions{display:flex;gap:5px}
+.empty{text-align:center;padding:56px 20px;color:var(--muted);font-size:14px}
+.pagination{display:flex;gap:6px;align-items:center;justify-content:flex-end;margin-top:14px}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;max-width:620px;width:100%;max-height:90vh;overflow-y:auto;padding:28px}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.modal-header h3{font-size:17px;font-weight:700}
+.close-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:22px;line-height:1;padding:4px}
+.detail-row{display:flex;gap:14px;margin-bottom:12px}
+.detail-label{font-size:11px;font-weight:600;color:var(--muted);min-width:110px;padding-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.detail-val{font-size:14px;flex:1}
+.detail-msg{background:var(--surface2);border-radius:9px;padding:14px;font-size:14px;line-height:1.7;white-space:pre-wrap;margin-top:4px;border-left:3px solid var(--accent)}
+
+/* EMAIL SETTINGS */
+.settings-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.settings-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px}
+.settings-card h3{font-size:15px;font-weight:700;margin-bottom:4px;letter-spacing:-.01em}
+.settings-card .desc{color:var(--muted);font-size:13px;margin-bottom:20px;line-height:1.55}
+.connection-status{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface2);border-radius:9px;margin-bottom:20px}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.dot-green{background:var(--green);box-shadow:0 0 10px rgba(34,197,94,.5)}
+.dot-orange{background:var(--accent);box-shadow:0 0 10px rgba(232,130,12,.5)}
+.dot-gray{background:var(--muted2)}
+.conn-info{flex:1}
+.conn-label{font-size:13px;font-weight:600}
+.conn-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.provider-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.prov-btn{padding:12px 8px;border:1.5px solid var(--border);border-radius:9px;background:var(--surface2);cursor:pointer;text-align:center;font-size:12px;font-weight:600;color:var(--muted);transition:all .15s;font-family:inherit}
+.prov-btn:hover,.prov-btn.sel{border-color:var(--accent);background:rgba(232,130,12,.1);color:var(--accent2)}
+.prov-icon{font-size:20px;display:block;margin-bottom:4px}
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--muted);font-size:12px;font-weight:500}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.feedback{margin-top:12px;padding:11px 14px;border-radius:9px;font-size:13px;font-weight:500;line-height:1.5}
+.feedback.ok{background:rgba(34,197,94,.08);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.feedback.err{background:rgba(239,68,68,.08);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.feedback.info{background:rgba(232,130,12,.08);color:var(--accent2);border:1px solid rgba(232,130,12,.2)}
+
+/* SMTP COLLAPSIBLE */
+.smtp-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--muted);font-size:13px;font-weight:500;margin-top:16px;padding:10px 0;border-top:1px solid var(--border);user-select:none}
+.smtp-toggle:hover{color:var(--text)}
+.smtp-body{display:none;margin-top:16px}
+.smtp-body.open{display:block}
+
+/* CHART */
+.chart-bars{display:flex;gap:6px;align-items:flex-end;height:80px;margin-top:12px}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.chart-bar{width:100%;background:var(--grad);border-radius:4px 4px 0 0;transition:height .4s}
+.chart-bar-label{font-size:10px;color:var(--muted)}
+.chart-bar-val{font-size:11px;color:var(--accent2);font-weight:600}
+
+@media(max-width:900px){
+  .sidebar{display:none}.main{margin-left:0;padding:16px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .settings-layout{grid-template-columns:1fr}
+  .provider-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <h1>ICONICONE</h1>
+      <p>Admin · Anfragen-Verwaltung</p>
+    </div>
+    <div class="fg"><label>Benutzername</label><input type="text" id="lu" placeholder="admin" autocomplete="username"></div>
+    <div class="fg"><label>Passwort</label><input type="password" id="lp" placeholder="••••••••" autocomplete="current-password"></div>
+    <button class="btn btn-primary" onclick="doLogin()" id="login-btn">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      Anmelden
+    </button>
+    <div id="login-err" class="err"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <span>ICONICONE</span>
+    </div>
+    <button class="nav-item active" data-page="requests" onclick="showPage('requests',this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Anfragen
+      <span class="nav-badge" id="nav-neu">0</span>
+    </button>
+    <button class="nav-item" data-page="stats" onclick="showPage('stats',this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Statistiken
+    </button>
+    <button class="nav-item" data-page="email-settings" onclick="showPage('email-settings',this)">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      E-Mail Einstellungen
+    </button>
+    <div class="sidebar-bottom">
+      <button class="nav-item" onclick="logout()">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Abmelden
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ANFRAGEN -->
+    <div id="page-requests" class="page active">
+      <div class="page-header">
+        <div class="page-title">Anfragen</div>
+      </div>
+
+      <div class="tab-row">
+        <div class="tab active" onclick="setTab('alle',this)">Alle</div>
+        <div class="tab" onclick="setTab('neu',this)">Neu</div>
+        <div class="tab" onclick="setTab('gelesen',this)">Gelesen</div>
+        <div class="tab" onclick="setTab('erledigt',this)">Erledigt</div>
+      </div>
+
+      <div class="filter-bar">
+        <div class="fg"><label>Von</label><input type="date" id="ff"></div>
+        <div class="fg"><label>Bis</label><input type="date" id="ft"></div>
+        <button class="btn btn-ghost btn-sm" onclick="loadRequests()">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Filtern
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="document.getElementById('ff').value='';document.getElementById('ft').value='';loadRequests()">Zurücksetzen</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name / Firma</th><th>Service</th><th>Nachricht</th><th>Datum</th><th>Status</th><th>Aktionen</th></tr></thead>
+          <tbody id="tbody"><tr><td colspan="6" class="empty">Wird geladen…</td></tr></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- STATISTIKEN -->
+    <div id="page-stats" class="page">
+      <div class="page-title" style="margin-bottom:28px">Statistiken</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Gesamt</div><div class="stat-value" id="s-total" style="color:var(--accent2)">—</div></div>
+        <div class="stat-card"><div class="stat-label">Neu</div><div class="stat-value" id="s-neu" style="color:var(--accent2)">—</div></div>
+        <div class="stat-card"><div class="stat-label">Gelesen</div><div class="stat-value" id="s-gelesen" style="color:var(--yellow)">—</div></div>
+        <div class="stat-card"><div class="stat-label">Erledigt</div><div class="stat-value" id="s-erledigt" style="color:var(--green)">—</div></div>
+      </div>
+      <div class="settings-card" style="max-width:600px">
+        <h3>Heute</h3>
+        <div class="stat-value" id="s-heute" style="font-size:52px;color:var(--accent2);margin-top:8px">—</div>
+      </div>
+      <div class="settings-card" style="max-width:600px;margin-top:16px">
+        <h3>Letzte 7 Tage</h3>
+        <div class="chart-bars" id="chart"></div>
+      </div>
+    </div>
+
+    <!-- E-MAIL EINSTELLUNGEN -->
+    <div id="page-email-settings" class="page">
+      <div class="page-title" style="margin-bottom:28px">E-Mail Einstellungen</div>
+
+      <div class="settings-layout">
+        <div>
+          <!-- Verbindungsstatus -->
+          <div class="settings-card" style="margin-bottom:16px">
+            <h3>Verbindungsstatus</h3>
+            <p class="desc">Aktuelle E-Mail-Konfiguration</p>
+            <div class="connection-status" id="conn-status">
+              <div class="dot dot-gray"></div>
+              <div class="conn-info">
+                <div class="conn-label">Nicht verbunden</div>
+                <div class="conn-sub">Bitte E-Mail-Konto verbinden</div>
+              </div>
+            </div>
+            <button class="btn btn-red btn-sm" id="btn-disconnect" style="display:none" onclick="disconnectEmail()">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Verbindung trennen
+            </button>
+          </div>
+
+          <!-- Google OAuth — Hauptmethode -->
+          <div class="settings-card">
+            <h3>Mit Google verbinden</h3>
+            <p class="desc">Empfohlen — Einmalig anmelden, kein Passwort nötig. Funktioniert mit Gmail und Google Workspace.</p>
+
+            <button class="btn btn-google" onclick="connectGoogle()" id="btn-google">
+              <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+              Mit Google verbinden
+            </button>
+            <div id="google-msg"></div>
+
+            <!-- SMTP als optionale Alternative -->
+            <div class="smtp-toggle" onclick="toggleSmtp()">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              <span>Oder manuell per SMTP verbinden</span>
+            </div>
+
+            <div class="smtp-body" id="smtp-body">
+              <div class="provider-grid" style="margin-top:16px">
+                <button class="prov-btn" onclick="pickProvider('ionos',this)"><span class="prov-icon">🇩🇪</span>IONOS</button>
+                <button class="prov-btn" onclick="pickProvider('strato',this)"><span class="prov-icon">🌐</span>Strato</button>
+                <button class="prov-btn" onclick="pickProvider('alinkl',this)"><span class="prov-icon">⚡</span>All-Inkl</button>
+                <button class="prov-btn" onclick="pickProvider('gmail_smtp',this)"><span class="prov-icon">📧</span>Gmail SMTP</button>
+                <button class="prov-btn" onclick="pickProvider('outlook',this)"><span class="prov-icon">🪟</span>Outlook</button>
+                <button class="prov-btn" onclick="pickProvider('custom',this)"><span class="prov-icon">⚙️</span>Eigener</button>
+              </div>
+              <div class="fg"><label>SMTP Host</label><input type="text" id="e-host" placeholder="smtp.ionos.de"></div>
+              <div class="row2">
+                <div class="fg"><label>Port</label><input type="number" id="e-port" value="465"></div>
+                <div class="fg"><label>Verschlüsselung</label>
+                  <select id="e-secure"><option value="true">SSL (465)</option><option value="false">STARTTLS (587)</option></select>
+                </div>
+              </div>
+              <div class="fg"><label>E-Mail-Adresse</label><input type="email" id="e-user" placeholder="info@deine-domain.de"></div>
+              <div class="fg"><label>Passwort</label><input type="password" id="e-pass" placeholder="••••••••"></div>
+              <button class="btn btn-primary" onclick="saveSMTP()" id="btn-save-smtp">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Verbinden & Speichern
+              </button>
+              <div id="smtp-msg"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rechte Spalte -->
+        <div>
+          <div class="settings-card" style="margin-bottom:16px">
+            <h3>Verbindung testen</h3>
+            <p class="desc">Sendet eine Test-E-Mail an die verbundene Adresse.</p>
+            <button class="btn btn-ghost" onclick="testEmail()" style="width:100%">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Test-E-Mail senden
+            </button>
+            <div id="test-msg"></div>
+          </div>
+
+          <div class="settings-card">
+            <h3>Anbieter-Infos</h3>
+            <p class="desc" style="margin-bottom:16px">SMTP-Daten für häufige Anbieter:</p>
+            <div id="provider-help" style="font-size:13px;line-height:1.8;color:var(--muted)">
+              Anbieter auswählen für Details.
+            </div>
+          </div>
+
+          <div class="settings-card" style="margin-top:16px">
+            <h3>Gmail App-Passwort</h3>
+            <p class="desc">Für Gmail SMTP (nicht OAuth) brauchst du ein App-Passwort:</p>
+            <ol style="font-size:13px;color:var(--muted);line-height:2;padding-left:18px">
+              <li>Google-Konto → Sicherheit</li>
+              <li>2-Faktor-Authentifizierung aktivieren</li>
+              <li>App-Passwörter → "Mail" wählen</li>
+              <li>16-stelligen Code kopieren</li>
+            </ol>
+            <a href="https://myaccount.google.com/apppasswords" target="_blank" class="btn btn-ghost btn-sm" style="margin-top:12px;text-decoration:none">App-Passwörter öffnen</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Anfrage Details</h3>
+      <button class="close-btn" onclick="document.getElementById('modal').classList.remove('open')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div id="modal-body"></div>
+    <div id="modal-actions" style="margin-top:20px;display:flex;gap:8px;flex-wrap:wrap"></div>
+  </div>
+</div>
+
+<script>
+const API = window.location.origin;
+let TOKEN = localStorage.getItem('admin_token');
+let currentStatus = 'alle';
+let currentPage   = 0;
+const PAGE_SIZE   = 25;
+
+const PROVIDERS = {
+  ionos:      { host:'smtp.ionos.de',       port:465, secure:true,  help:'Host: smtp.ionos.de · Port: 465 (SSL) · Passwort: normales IONOS-Passwort' },
+  strato:     { host:'smtp.strato.de',       port:465, secure:true,  help:'Host: smtp.strato.de · Port: 465 (SSL) · Passwort: normales Strato-Passwort' },
+  alinkl:     { host:'smtp.all-inkl.com',    port:465, secure:true,  help:'Host: smtp.all-inkl.com · Port: 465 (SSL) · Passwort: normales All-Inkl-Passwort' },
+  gmail_smtp: { host:'smtp.gmail.com',       port:465, secure:true,  help:'Host: smtp.gmail.com · Port: 465 (SSL) · Passwort: App-Passwort (nicht normales Passwort!) → siehe rechts' },
+  outlook:    { host:'smtp.office365.com',   port:587, secure:false, help:'Host: smtp.office365.com · Port: 587 (STARTTLS) · Passwort: normales Microsoft-Passwort' },
+  custom:     { host:'',                     port:465, secure:true,  help:'Bitte SMTP-Daten von deinem Anbieter eintragen.' },
+};
+
+async function doLogin() {
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-err');
+  btn.disabled = true; err.textContent = '';
+  try {
+    const r = await fetch(`${API}/api/admin/login`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ username: document.getElementById('lu').value, password: document.getElementById('lp').value })
+    });
+    const d = await r.json();
+    if (!r.ok) { err.textContent = d.error || 'Fehler beim Login'; return; }
+    TOKEN = d.token; localStorage.setItem('admin_token', TOKEN);
+    showApp();
+  } catch { err.textContent = 'Verbindungsfehler'; }
+  finally { btn.disabled = false; }
+}
+
+function logout() { localStorage.removeItem('admin_token'); TOKEN = null; location.reload(); }
+function ah() { return { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json' }; }
+
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  loadRequests();
+  loadEmailStatus();
+  checkURLParams();
+}
+
+function showPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (el) el.classList.add('active');
+  if (name === 'stats') loadStats();
+  if (name === 'email-settings') loadEmailStatus();
+}
+
+function setTab(s, el) {
+  currentStatus = s; currentPage = 0;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  loadRequests();
+}
+
+function toggleSmtp() {
+  const body = document.getElementById('smtp-body');
+  const toggle = document.querySelector('.smtp-toggle svg');
+  body.classList.toggle('open');
+  toggle.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+async function loadRequests() {
+  document.getElementById('tbody').innerHTML = '<tr><td colspan="6" class="empty">Wird geladen…</td></tr>';
+  const from = document.getElementById('ff').value;
+  const to   = document.getElementById('ft').value;
+  let url = `${API}/api/admin/requests?status=${currentStatus}&limit=${PAGE_SIZE}&offset=${currentPage * PAGE_SIZE}`;
+  if (from) url += `&from=${from}`;
+  if (to)   url += `&to=${to}`;
+  try {
+    const r = await fetch(url, { headers: ah() });
+    if (r.status === 401) { logout(); return; }
+    const d = await r.json();
+    renderTable(d.requests || []);
+    renderPagination(d.total || 0);
+    const neuR = await fetch(`${API}/api/admin/stats`, { headers: ah() });
+    const neuD = await neuR.json();
+    document.getElementById('nav-neu').textContent = neuD.neu || 0;
+  } catch {
+    document.getElementById('tbody').innerHTML = '<tr><td colspan="6" class="empty">Fehler beim Laden</td></tr>';
+  }
+}
+
+function renderTable(rows) {
+  const tbody = document.getElementById('tbody');
+  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">Keine Anfragen gefunden</td></tr>'; return; }
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td><div class="td-name">${esc(r.name)}</div><div class="td-sub">${esc(r.email)}</div>${r.phone?`<div class="td-sub">${esc(r.phone)}</div>`:''}</td>
+      <td style="color:var(--muted);font-size:12px">${esc(r.service)||'—'}</td>
+      <td class="td-msg" title="${esc(r.message)}">${esc(r.message)}</td>
+      <td style="white-space:nowrap;color:var(--muted);font-size:12px">${fmtDate(r.createdAt)}</td>
+      <td><span class="badge badge-${r.status}">${r.status}</span></td>
+      <td><div class="actions">
+        <button class="btn btn-ghost btn-sm" onclick='openDetail(${JSON.stringify(r).replace(/'/g,"&#39;")})'>Details</button>
+        ${r.status==='neu'?`<button class="btn btn-yellow btn-sm" onclick="setStatus('${r.id}','gelesen')">Gelesen</button>`:''}
+        ${r.status!=='erledigt'?`<button class="btn btn-green btn-sm" onclick="setStatus('${r.id}','erledigt')">Erledigt</button>`:''}
+      </div></td>
+    </tr>`).join('');
+}
+
+async function setStatus(id, status) {
+  await fetch(`${API}/api/admin/requests`, { method:'PATCH', headers: ah(), body: JSON.stringify({id,status}) });
+  loadRequests();
+}
+
+function renderPagination(total) {
+  const pages = Math.ceil(total / PAGE_SIZE);
+  const el = document.getElementById('pagination');
+  if (pages <= 1) { el.innerHTML=''; return; }
+  el.innerHTML = Array.from({length:pages},(_,i)=>
+    `<button class="btn btn-sm ${i===currentPage?'btn-primary':'btn-ghost'}" onclick="currentPage=${i};loadRequests()">${i+1}</button>`
+  ).join('');
+}
+
+function openDetail(r) {
+  const rows = [
+    ['Name',r.name],['E-Mail',r.email],['Telefon',r.phone||'—'],
+    ['Firma',r.firma||'—'],['Service',r.service||'—'],
+    ['Datum',fmtDate(r.createdAt)],['Status',`<span class="badge badge-${r.status}">${r.status}</span>`]
+  ];
+  document.getElementById('modal-body').innerHTML =
+    rows.map(([l,v])=>`<div class="detail-row"><div class="detail-label">${l}</div><div class="detail-val">${v}</div></div>`).join('') +
+    `<div class="detail-row"><div class="detail-label">Nachricht</div><div class="detail-val"><div class="detail-msg">${esc(r.message)}</div></div></div>`;
+  document.getElementById('modal-actions').innerHTML = [
+    r.status==='neu'?`<button class="btn btn-yellow btn-sm" onclick="setStatus('${r.id}','gelesen');closeM()">Als gelesen markieren</button>`:'',
+    r.status!=='erledigt'?`<button class="btn btn-green btn-sm" onclick="setStatus('${r.id}','erledigt');closeM()">Als erledigt markieren</button>`:''
+  ].join('');
+  document.getElementById('modal').classList.add('open');
+}
+function closeM() { document.getElementById('modal').classList.remove('open'); }
+function closeModal(e) { if (e.target===document.getElementById('modal')) closeM(); }
+
+async function loadStats() {
+  const r = await fetch(`${API}/api/admin/stats`, { headers: ah() });
+  const d = await r.json();
+  document.getElementById('s-total').textContent   = d.total    ?? '—';
+  document.getElementById('s-neu').textContent     = d.neu      ?? '—';
+  document.getElementById('s-gelesen').textContent = d.gelesen  ?? '—';
+  document.getElementById('s-erledigt').textContent= d.erledigt ?? '—';
+  document.getElementById('s-heute').textContent   = d.heute    ?? '—';
+  if (d.last7days) {
+    const max = Math.max(...d.last7days.map(x=>x.count), 1);
+    document.getElementById('chart').innerHTML = d.last7days.map(x=>`
+      <div class="chart-bar-wrap">
+        <div class="chart-bar-val">${x.count}</div>
+        <div class="chart-bar" style="height:${Math.max(4,(x.count/max)*60)}px"></div>
+        <div class="chart-bar-label">${x.date.slice(5)}</div>
+      </div>`).join('');
+  }
+}
+
+async function loadEmailStatus() {
+  try {
+    const r = await fetch(`${API}/api/admin/email-config`, { headers: ah() });
+    const d = await r.json();
+    const el  = document.getElementById('conn-status');
+    const btn = document.getElementById('btn-disconnect');
+    if (d.configured) {
+      const typeLabel = d.type === 'google_oauth' ? 'Google OAuth' : 'SMTP';
+      const dotClass  = d.type === 'google_oauth' ? 'dot-green' : 'dot-orange';
+      el.innerHTML = `<div class="dot ${dotClass}"></div>
+        <div class="conn-info">
+          <div class="conn-label">Verbunden</div>
+          <div class="conn-sub">${esc(d.user)} · ${typeLabel}${d.updatedAt ? ' · ' + fmtDate(d.updatedAt) : ''}</div>
+        </div>`;
+      btn.style.display = 'flex';
+    } else {
+      el.innerHTML = `<div class="dot dot-gray"></div><div class="conn-info"><div class="conn-label">Nicht verbunden</div><div class="conn-sub">Bitte E-Mail-Konto verbinden</div></div>`;
+      btn.style.display = 'none';
+    }
+  } catch {}
+}
+
+async function disconnectEmail() {
+  if (!confirm('Verbindung wirklich trennen?')) return;
+  await fetch(`${API}/api/admin/email-config`, { method:'DELETE', headers: ah() });
+  loadEmailStatus();
+  showMsg('smtp-msg', 'Verbindung getrennt.', 'info');
+}
+
+function pickProvider(key, el) {
+  document.querySelectorAll('.prov-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  const p = PROVIDERS[key];
+  if (p.host) document.getElementById('e-host').value  = p.host;
+  document.getElementById('e-port').value   = p.port;
+  document.getElementById('e-secure').value = String(p.secure);
+  document.getElementById('provider-help').innerHTML =
+    `<div style="background:var(--surface2);border-radius:9px;padding:12px;color:var(--text);font-size:13px">${p.help}</div>`;
+}
+
+async function saveSMTP() {
+  const btn = document.getElementById('btn-save-smtp');
+  const host   = document.getElementById('e-host').value.trim();
+  const port   = document.getElementById('e-port').value;
+  const secure = document.getElementById('e-secure').value === 'true';
+  const user   = document.getElementById('e-user').value.trim();
+  const pass   = document.getElementById('e-pass').value;
+
+  if (!host || !user || !pass) { showMsg('smtp-msg','Alle Felder ausfüllen','err'); return; }
+
+  btn.disabled = true;
+  showMsg('smtp-msg','Verbindung wird geprüft…','info');
+
+  try {
+    const r = await fetch(`${API}/api/admin/email-config`, {
+      method:'POST', headers: ah(),
+      body: JSON.stringify({ host, port:parseInt(port), secure, user, pass })
+    });
+    const d = await r.json();
+    if (r.ok) {
+      showMsg('smtp-msg', d.message, 'ok');
+      loadEmailStatus();
+      document.getElementById('e-pass').value = '';
+    } else {
+      showMsg('smtp-msg', (d.error||'Fehler') + (d.hint ? '\n' + d.hint : ''), 'err');
+    }
+  } catch { showMsg('smtp-msg','Verbindungsfehler','err'); }
+  finally { btn.disabled = false; }
+}
+
+async function connectGoogle() {
+  const btn = document.getElementById('btn-google');
+  btn.disabled = true;
+  showMsg('google-msg','Öffne Google-Anmeldung…','info');
+  try {
+    const r = await fetch(`${API}/api/admin/google-auth-url`, { headers: ah() });
+    const d = await r.json();
+    if (d.url) {
+      window.location.href = d.url;
+    } else {
+      showMsg('google-msg', d.error || 'Google OAuth nicht konfiguriert. GOOGLE_CLIENT_ID ENV-Variable setzen.', 'err');
+      btn.disabled = false;
+    }
+  } catch { showMsg('google-msg','Verbindungsfehler','err'); btn.disabled = false; }
+}
+
+async function testEmail() {
+  const btn = event.currentTarget;
+  btn.disabled = true;
+  try {
+    const r = await fetch(`${API}/api/admin/email-test`, { method:'POST', headers: ah() });
+    const d = await r.json();
+    showMsg('test-msg', r.ok ? d.message : d.error, r.ok ? 'ok' : 'err');
+  } catch { showMsg('test-msg','Fehler','err'); }
+  finally { btn.disabled = false; }
+}
+
+function checkURLParams() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('email_success') === 'google') {
+    showPage('email-settings', document.querySelector('[data-page="email-settings"]'));
+    showMsg('google-msg','Google-Konto erfolgreich verbunden!','ok');
+    loadEmailStatus();
+    history.replaceState({}, '', '/dashboard.html');
+  }
+  if (p.get('email_error')) {
+    showPage('email-settings', document.querySelector('[data-page="email-settings"]'));
+    showMsg('google-msg','Google-Verbindung fehlgeschlagen: ' + p.get('email_error'),'err');
+    history.replaceState({}, '', '/dashboard.html');
+  }
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtDate(iso) { if (!iso) return '—'; return new Date(iso).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+function showMsg(id, text, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'feedback ' + type;
+  el.style.whiteSpace = 'pre-line';
+  el.textContent = text;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') doLogin();
+});
+
+if (TOKEN) showApp();
+</script>
+</body>
+</html>
