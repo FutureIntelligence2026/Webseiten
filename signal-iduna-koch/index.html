@@ -28,7 +28,7 @@
     "@type": "InsuranceAgency",
     "name": "SIGNAL IDUNA Versicherung Michael Koch",
     "url": "https://signalinduna-koch-bremen.de",
-    "telephone": "[TELEFON EINFÜGEN]",
+    "telephone": "0173 8569395",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Ansgaritorstraße 24",
@@ -72,12 +72,12 @@
       --grad-dark:   linear-gradient(135deg, #002654 0%, #005CA9 100%);
       --grad-ink:    linear-gradient(140deg, #003f7a 0%, #005CA9 100%);
 
-      --glow:        0 8px 28px rgba(0,92,169,.35);
-      --glow-lg:     0 16px 48px rgba(0,92,169,.48);
+      --glow:        0 8px 32px rgba(0,92,169,.42);
+      --glow-lg:     0 20px 56px rgba(0,92,169,.55);
 
-      --sh-s:  0 1px 10px rgba(0,0,0,.06);
-      --sh-m:  0 6px 28px rgba(0,0,0,.1);
-      --sh-l:  0 20px 56px rgba(0,0,0,.13);
+      --sh-s:  0 2px 12px rgba(0,0,0,.07);
+      --sh-m:  0 8px 32px rgba(0,0,0,.12);
+      --sh-l:  0 24px 64px rgba(0,0,0,.16);
 
       --ff-h: 'Barlow Condensed', Impact, sans-serif;
       --ff-b: 'Barlow', -apple-system, sans-serif;
@@ -255,7 +255,12 @@
       position: absolute; inset: 0;
       background-image: url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1600&h=900&fit=crop&q=80');
       background-size: cover; background-position: center;
-      opacity: .1;
+      opacity: .18;
+    }
+    .hero::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(0,22,60,.55) 0%, rgba(0,22,60,.1) 70%, transparent 100%);
+      z-index: 1; pointer-events: none;
     }
     .hero-inner {
       position: relative; z-index: 3; width: 100%;
@@ -335,7 +340,7 @@
     @media (min-width: 900px) { .l-grid { grid-template-columns: repeat(3,1fr); } }
 
     .lc {
-      background: var(--white); border-radius: var(--r); padding: 28px 22px;
+      background: var(--white); border-radius: var(--r); padding: 32px 28px;
       border: 1px solid var(--line); transition: transform .25s, box-shadow .25s, border-color .25s;
       position: relative; overflow: hidden;
     }
@@ -407,12 +412,12 @@
     .zg { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
     @media (min-width: 640px) { .zg { grid-template-columns: repeat(4,1fr); } }
     .zbox {
-      padding: 40px 24px; text-align: center;
+      padding: 48px 28px; text-align: center;
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
-      transition: background .2s; background: var(--off);
+      transition: background .25s, transform .25s, box-shadow .25s; background: var(--off);
     }
-    .zbox:hover { background: #fff; }
+    .zbox:hover { background: #fff; box-shadow: var(--sh-s); transform: translateY(-3px); }
     .zbox:nth-child(2n) { border-right: none; }
     @media (min-width: 640px) {
       .zbox:nth-child(2n) { border-right: 1px solid var(--line); }
@@ -430,11 +435,11 @@
     @media (min-width: 900px) { .bg3 { grid-template-columns: repeat(3,1fr); } }
 
     .bc {
-      background: var(--white); border-radius: var(--r); padding: 28px 24px;
+      background: var(--white); border-radius: var(--r); padding: 32px 28px;
       border: 1px solid var(--line); box-shadow: var(--sh-s);
-      transition: transform .25s, box-shadow .25s;
+      transition: transform .25s, box-shadow .25s, border-color .25s;
     }
-    .bc:hover { transform: translateY(-5px); box-shadow: var(--sh-m); }
+    .bc:hover { transform: translateY(-6px); box-shadow: var(--sh-m); border-color: rgba(0,92,169,.18); }
     .bc-stars { display: flex; gap: 3px; margin-bottom: 14px; }
     .bst { color: #f59e0b; font-size: 17px; }
     .bc-txt { font-size: 15px; color: var(--ink); line-height: 1.72; margin-bottom: 20px; font-style: italic; max-width: none; }
@@ -468,12 +473,18 @@
     .fa-in { padding: 0 24px 22px; font-size: 15px; color: var(--ink-mid); line-height: 1.76; max-width: none; }
 
     /* ── CTA SECTION — blue ── */
-    .cta-sec { background: var(--grad-dark); padding: 80px 0; position: relative; overflow: hidden; }
+    .cta-sec { background: var(--grad-dark); padding: 96px 0; position: relative; overflow: hidden; }
     .cta-sec::before {
       content: '';
-      position: absolute; top: -100px; right: -100px;
-      width: 500px; height: 500px; border-radius: 50%;
-      background: rgba(255,255,255,.06); pointer-events: none;
+      position: absolute; top: -120px; right: -120px;
+      width: 560px; height: 560px; border-radius: 50%;
+      background: rgba(255,255,255,.07); pointer-events: none;
+    }
+    .cta-sec::after {
+      content: '';
+      position: absolute; bottom: -80px; left: -80px;
+      width: 360px; height: 360px; border-radius: 50%;
+      background: rgba(255,255,255,.04); pointer-events: none;
     }
     .cta-inner { position: relative; z-index: 2; text-align: center; }
     .cta-inner h2 { color: #fff; margin-bottom: 14px; }
@@ -602,7 +613,7 @@
         <a href="#kontakt" onclick="goNav(event,'#kontakt')">Kontakt</a>
       </div>
       <div class="nav-right">
-        <a href="tel:[TELEFON EINFÜGEN]" class="nav-tel">
+        <a href="tel:0173 8569395" class="nav-tel">
           <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C9.6 21 3 14.4 3 6c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
           Jetzt anrufen
         </a>
@@ -620,7 +631,7 @@
     <a href="#ueber-uns" onclick="closePanel('#ueber-uns')">Über uns</a>
     <a href="#bewertungen" onclick="closePanel('#bewertungen')">Bewertungen</a>
     <a href="#faq" onclick="closePanel('#faq')">FAQ</a>
-    <a href="tel:[TELEFON EINFÜGEN]" class="panel-tel">☎ [TELEFON EINFÜGEN]</a>
+    <a href="tel:0173 8569395" class="panel-tel">☎ 0173 8569395</a>
     <a href="#kontakt" onclick="closePanel('#kontakt')" class="btn panel-cta">Kostenlos anfragen</a>
   </div>
 
@@ -640,7 +651,7 @@
       </h1>
       <p class="hero-sub">Michael Koch berät ehrlich, antwortet schnell und verkauft Ihnen nichts, was Sie nicht brauchen. 4,9 Sterne auf Google — das sagen seine Kunden selbst.</p>
       <div class="hero-ctas">
-        <a href="tel:[TELEFON EINFÜGEN]" class="btn">
+        <a href="tel:0173 8569395" class="btn">
           <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C9.6 21 3 14.4 3 6c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
           Direkt anrufen
         </a>
@@ -834,7 +845,7 @@
         <h2>Reden wir.<br>Kein Druck. Kein Skript.</h2>
         <p>Kurz anrufen oder Formular ausfüllen — Michael Koch meldet sich persönlich. Nicht ein Callcenter-Agent.</p>
         <div class="cta-btns">
-          <a href="tel:[TELEFON EINFÜGEN]" class="btn btn-ink">
+          <a href="tel:0173 8569395" class="btn btn-ink">
             <svg viewBox="0 0 24 24" style="width:17px;height:17px;fill:#fff"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C9.6 21 3 14.4 3 6c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
             Jetzt anrufen
           </a>
@@ -879,7 +890,7 @@
           <div class="k-tiles">
             <div class="ktile">
               <div class="ktic"><svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C9.6 21 3 14.4 3 6c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg></div>
-              <div class="ktxt"><strong>Telefon</strong><a href="tel:[TELEFON EINFÜGEN]">[TELEFON EINFÜGEN]</a></div>
+              <div class="ktxt"><strong>Telefon</strong><a href="tel:0173 8569395">0173 8569395</a></div>
             </div>
             <div class="ktile">
               <div class="ktic"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
@@ -974,7 +985,7 @@
         <div class="ftcol">
           <h4>Kontakt</h4>
           <p>Ansgaritorstraße 24<br>28195 Bremen</p>
-          <p><a href="tel:[TELEFON EINFÜGEN]" style="color:rgba(255,255,255,.52)">[TELEFON EINFÜGEN]</a></p>
+          <p><a href="tel:0173 8569395" style="color:rgba(255,255,255,.52)">0173 8569395</a></p>
           <p style="font-size:13px;opacity:.45;margin-top:10px">Mo–Fr: 09:00–17:00</p>
         </div>
       </div>
@@ -994,7 +1005,7 @@
 </div><!-- /landing -->
 
 <!-- FAB -->
-<a href="tel:[TELEFON EINFÜGEN]" class="fab" aria-label="Anrufen">
+<a href="tel:0173 8569395" class="fab" aria-label="Anrufen">
   <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C9.6 21 3 14.4 3 6c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
 </a>
 
@@ -1013,7 +1024,7 @@
       <h2>Angaben gemäß § 5 DDG</h2>
       <p><strong>SIGNAL IDUNA Versicherung Michael Koch</strong><br>Ansgaritorstraße 24<br>28195 Bremen</p>
       <h2>Kontakt</h2>
-      <p>Telefon: [TELEFON EINFÜGEN]<br>E-Mail: [EMAIL EINFÜGEN]</p>
+      <p>Telefon: 0173 8569395<br>E-Mail: [EMAIL EINFÜGEN]</p>
       <h2>Berufsbezeichnung</h2>
       <p>Versicherungsvermittler (Versicherungsagent) gemäß § 34d Abs. 1 GewO. Zuständige Aufsichtsbehörde: IHK Bremen.</p>
       <h2>Registrierung</h2>
@@ -1038,7 +1049,7 @@
       <h1>Datenschutzerklärung</h1>
       <p>Stand: April 2025</p>
       <h2>1. Verantwortlicher</h2>
-      <p>SIGNAL IDUNA Versicherung Michael Koch · Ansgaritorstraße 24 · 28195 Bremen · [TELEFON] · [EMAIL]</p>
+      <p>SIGNAL IDUNA Versicherung Michael Koch · Ansgaritorstraße 24 · 28195 Bremen · 0173 8569395 · [EMAIL]</p>
       <h2>2. Erhebung von Daten</h2>
       <p>Beim Besuch dieser Website werden Server-Log-Daten gespeichert (Browser, IP, Uhrzeit) — nicht personenbeziehbar, nur zur Betriebssicherheit.</p>
       <h2>3. Kontaktformular</h2>
